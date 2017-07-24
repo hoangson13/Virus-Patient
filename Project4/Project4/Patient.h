@@ -5,6 +5,8 @@
 class Patient
 {
 public:
+	static const int DEATH = 0;
+	static const int ALIVE = 1;
 	Patient();
 	~Patient() {};
 	void InitResistance();

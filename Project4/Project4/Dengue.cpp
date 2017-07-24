@@ -12,7 +12,7 @@ Dengue::Dengue(const Dengue &other) :Virus(other) {
 	strcpy(m_protein, other.m_protein);
 }
 
-Dengue::~Dengue() {};
+Dengue::~Dengue() {}
 
 void Dengue::DoBorn() {
 	LoadADNInformation();

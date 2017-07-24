@@ -16,32 +16,21 @@ Patient::Patient() {
 	std::cout << "Total virus current resistance " << totalV << std::endl;
 	std::cout << "Total number virus " << m_virusList.size() << std::endl;
 	std::cout << "==================================" << std::endl;
-	m_state = 1;
+	m_state = ALIVE;
 }
 
 void Patient::DoStart() {
 
 	int n = rand() % 11 + 10;
-	for (int i = 0; i < n; i++) {
-		int type = rand() % 2;
-		if (type == 0) {
-			Virus *v = new Dengue;
-			m_virusList.push_back(v);
-			std::cout << "D" << std::endl;
-		}
-		else {
-			Virus *v = new Flu;
-			m_virusList.push_back(v);
-			std::cout << "F" << std::endl;
-		}
-	}
+	for (int i = 0; i < n; i++)
+		m_virusList.push_back(rand() % 2 ? (Virus*)new Flu : new Dengue);
 }
 
 void Patient::TakeMedicine(char medicine_take) {
 	int totalV = 0;
 	bool isActive = 1;
 	std::list<Virus*> delVirus;
-
+/*
 	std::list<Virus*>::iterator i = m_virusList.begin();
 	while (i != m_virusList.end())
 	{
@@ -54,14 +43,14 @@ void Patient::TakeMedicine(char medicine_take) {
 		{
 			std::list <Virus*> nlist = (*i)->DoClone();
 			for (auto& j : nlist) {
-				m_virusList.push_front(nlist.front());
+				m_virusList.push_front(j);
 			}
 			i++;
 		}
 	}
 
-	/*
-	for (auto &i : m_virusList) {
+*/
+	for (auto i : m_virusList) {
 		if (medicine_take == '1') isActive = i->ReduceResistance(rand() % 60 + 1);
 		if (!isActive)
 		{
@@ -70,28 +59,21 @@ void Patient::TakeMedicine(char medicine_take) {
 		else
 		{
 			std::list <Virus*> nlist = i->DoClone();
-			for (auto& j : nlist) {
-				m_virusList.push_front(nlist.front());
+			for (auto j : nlist) {
+				m_virusList.push_front(j);
 			}
 		}
 	}
 
-	for (auto& i : delVirus) {
+	for (auto i : delVirus) {
 		m_virusList.remove(i);
 	}
-*/
 
 	for (auto& i : m_virusList) {
-		std::cout << i->GetResistance() << std::endl;
-	}
-
-	for (auto& i : m_virusList) {
-		totalV += i->GetResistance();
+		if(i->GetResistance()>0) totalV += i->GetResistance();
 	}
 	if (totalV >= m_resistance) DoDie();
 
-	std::cout << "Total virus current resistance " << totalV << std::endl;
-	std::cout << "Total number virus " << m_virusList.size() << std::endl;
 	std::cout << "==================================" << std::endl;
 }
 
@@ -101,14 +83,16 @@ int Patient::GetState() {
 
 bool Patient::GetHealthy()
 {
-	return m_virusList.size()==0;
+	int totalV=0;
+	for (auto& i : m_virusList) {
+		if (i->GetResistance()>0) totalV += i->GetResistance();
+	}
+	return totalV==0;
 }
 
 void Patient::DoDie() {
-	for (auto i : m_virusList) {
-		delete(i);
-	}
-	m_state = 0;
+	m_virusList.clear();
+	m_state = DEATH;
 }
 
 void Patient::InitResistance() {

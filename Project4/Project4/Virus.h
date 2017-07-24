@@ -3,8 +3,8 @@
 class Virus {
 public:
 	Virus();
-	Virus(char *dna, int resistance);
-	Virus(const Virus &V);
+	Virus(char *, int);
+	Virus(const Virus &);
 	virtual ~Virus();
 
 	void LoadADNInformation();

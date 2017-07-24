@@ -1,17 +1,13 @@
 #include"Flu.h"
-#include <stdlib.h>
-#include <time.h>
-#include<iostream>
 
 Flu::Flu() {
 	DoBorn();
 	InitResistance();
-	std::cout << GetResistance() << std::endl;
 }
 
-Flu::Flu(const Flu &other) : Virus(other), m_color(other.m_color) {};
+Flu::Flu(const Flu &other) : Virus(other), m_color(other.m_color) {}
 
-Flu::~Flu() { std::cout << "~~" << std::endl; };
+Flu::~Flu() {}
 
 void Flu::DoBorn() {
 	LoadADNInformation();

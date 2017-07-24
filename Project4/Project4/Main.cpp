@@ -6,13 +6,17 @@ int main()
 	srand(time(NULL));
 	Patient p;
 	char t = 0;
-	while (p.GetState() == 1)
+	while (p.GetState() == p.ALIVE)
 	{
-		printf("Take Medicine (0 = NO, 1 = YES): ");
+		std::cout << "Take Medicine (0 = NO, 1 = YES): " << std::endl;
 		std::cin >> t;
 		p.TakeMedicine(t);
-		if (p.GetHealthy()) break;
+		if (p.GetHealthy()) {
+			std::cout << "The patient is now healthy" << std::endl;
+			break;
+		}
+		if (p.GetState() == p.DEATH) std::cout << "The patient die!!!" << std::endl;
 	}
-	getchar();
+	system("pause");
 	return 0;
 }
